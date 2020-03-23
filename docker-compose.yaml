@@ -1,0 +1,44 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: social_network
+      POSTGRES_USER: social_network
+      POSTGRES_PASSWORD: social_network
+      POSTGRES_MULTIPLE_DATABASES: social_network,social_network_test
+  web:
+    build: .
+    command: start-reload
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  celery:
+    build: .
+    command: celery -A app worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis
+  celery-beat:
+    build: .
+    command: celery -A app beat -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+      - redis

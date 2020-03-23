@@ -1,0 +1,16 @@
+#!/bin/sh
+
+case "$1" in
+    "start-reload")
+        echo "Running migrations..."
+        python manage.py migrate
+        echo "Collection static..."
+        python manage.py collectstatic --noinput
+        python manage.py loaddata fixtures.json
+        echo "Starting server..."
+        python manage.py runserver 0.0.0.0:8000
+        ;;
+    *)
+        exec ${@}
+        ;;
+esac

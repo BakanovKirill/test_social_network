@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "social_network"
+version = "0.1.0"
+description = ""
+authors = ["bakanovkirill <kirill.bakanov@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "3.7.6"
+Django = "^3.0.4"
+djangorestframework = "^3.11.0"
+psycopg2 = "^2.8.4"
+django-environ = "^0.4.5"
+black = "^19.10b0"
+djangorestframework_simplejwt = "^4.4.0"
+drf-yasg = "^1.17.1"
+clearbit = "^0.1.7"
+celery = "^4.4.2"
+redis = "^3.4.1"
+
+[tool.poetry.dev-dependencies]
+ipdb = "^0.13.2"
+ipython = "^7.13.0"
+pytest = "^5.4.1"
+pytest-django = "^3.8.0"
+black = "^19.10b0"
+pytest-factoryboy = "^2.0.3"
+mock = "^4.0.2"
+pytest-mock = "^2.0.0"
+pytest-runner = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

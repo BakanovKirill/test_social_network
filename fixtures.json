@@ -1,0 +1,20 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$36000$q3XjV9DUUPIN$gzV/8jHzqZ2dhmXdtXlIH5QTGTrg+vZflBXY0QLkP34=",
+      "last_login": null,
+      "is_superuser": true,
+      "username": "admin",
+      "first_name": "Vasya",
+      "last_name": "Pupkin",
+      "email": "vasya@mail.ru",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2017-05-10T14:13:20.230Z",
+      "groups": [],
+      "user_permissions": []
+    }
+  }
+]
