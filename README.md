@@ -1,3 +1,23 @@
+# Usage and installation
+Functionality is covered with tests, so you can check it with following commands
+
+```.bash
+$ docker-compose build
+$ docker-compose run --rm web pytest -s
+```
+
+To run the website and celery/beat workers
+```.bash
+$ docker-compose up
+```
+
+* You can use http://localhost:8000/swagger to access the API.
+* And view data in admin: http://localhost:8000/admin
+* Default superuser credentials: 
+    * Login: `admin` 
+    * Password: `admin`
+
+# Task
 Object of this task is to create a simple REST API. 
 You have to use Django and Django rest framework.
 # Social Network
