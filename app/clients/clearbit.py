@@ -1,6 +1,5 @@
-from requests import HTTPError
-
 import clearbit
+from requests import HTTPError
 
 
 class ClearBitClient:

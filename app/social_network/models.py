@@ -34,7 +34,9 @@ class Like(BaseModel):
 
 
 class Bot(BaseModel):
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, null=True, blank=True, on_delete=models.CASCADE, related_name="bot"
+    )
 
     def __str__(self):
         return self.user.email

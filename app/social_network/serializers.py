@@ -3,9 +3,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from rest_framework import serializers
-from .models import Post, Like
-from .tasks import enrich_user
+
 from ..clients import pyhunter_client
+from .models import Like, Post
+from .tasks import enrich_user
 
 User = get_user_model()
 
@@ -71,8 +72,8 @@ class AnalyticsSerializer(serializers.Serializer):
 
 
 class LikeSerializer(serializers.ModelSerializer):
-    author=serializers.HiddenField(default=None)
-    post=serializers.HiddenField(default=None)
+    author = serializers.HiddenField(default=None)
+    post = serializers.HiddenField(default=None)
 
     class Meta:
         model = Like

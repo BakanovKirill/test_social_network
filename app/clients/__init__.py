@@ -1,6 +1,7 @@
+from django.conf import settings
+
 from app.clients.clearbit import ClearBitClient
 from app.clients.pyhunter import PyHunterClient
-from django.conf import settings
 
 clearbit_client = ClearBitClient(key=settings.CLEARBIT_API_KEY)
 

@@ -1,12 +1,3 @@
-from app.social_network.filters import LikeFilter
-from app.social_network.models import Post, Like
-from app.social_network.serializers import (
-    SignupSerializer,
-    PostSerializer,
-    AnalyticsSerializer,
-    LikeSerializer,
-)
-from app.social_network.utils import get_tokens_for_user
 from django.db.models import Count
 from django_filters import rest_framework as filters
 from rest_framework import status
@@ -14,7 +5,17 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.mixins import CreateModelMixin, DestroyModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
+
+from app.social_network.filters import LikeFilter
+from app.social_network.models import Like, Post
+from app.social_network.serializers import (
+    AnalyticsSerializer,
+    LikeSerializer,
+    PostSerializer,
+    SignupSerializer,
+)
+from app.social_network.utils import get_tokens_for_user
 
 
 class SignupView(GenericAPIView):
@@ -44,7 +45,7 @@ class PostLikeView(CreateModelMixin, DestroyModelMixin, GenericViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
-        context["post"] = Post.objects.filter(id=self.kwargs['post_id']).first()
+        context["post"] = Post.objects.filter(id=self.kwargs["post_id"]).first()
         return context
 
     def get_queryset(self):

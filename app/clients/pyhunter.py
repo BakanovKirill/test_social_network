@@ -1,6 +1,5 @@
-from requests import HTTPError
-
 from pyhunter import PyHunter
+from requests import HTTPError
 
 
 class PyHunterClient:

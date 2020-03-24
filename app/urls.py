@@ -1,17 +1,17 @@
-from app.social_network.views import (
-    SignupView,
-    PostViewset,
-    AnalyticsView,
-    PostLikeView,
-)
 from django.conf.urls import url
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
-
 from rest_framework_simplejwt import views as jwt_views
+
+from app.social_network.views import (
+    AnalyticsView,
+    PostLikeView,
+    PostViewset,
+    SignupView,
+)
 
 API_VERSION = "v1"
 

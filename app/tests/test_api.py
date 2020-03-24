@@ -1,15 +1,22 @@
+from urllib.parse import urlencode
+
 import pytest
-from app.social_network.models import Post, Like
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-from urllib.parse import urlencode
+
+from app.social_network.models import Like, Post
+from app.social_network.tasks import launch_bots
 
 User = get_user_model()
 
 
-@pytest.mark.celery
+@pytest.mark.celery(task_always_eager=True)
 @pytest.mark.django_db
-def test_signup(client, mocker):
+def test_signup(
+    client, mocker,
+):
+
     mocker.patch(
         "app.social_network.tasks.clearbit_client.get_enrichment",
         return_value=dict(person=dict(name=dict(fullName="Kirill Bakanov"))),
@@ -51,11 +58,15 @@ def test_create_post(admin_client, admin_user):
 def test_post_like(admin_client, admin_user):
     post = Post.objects.create(title="text", text="text", author=admin_user)
 
-    response = admin_client.post(reverse("like_post", kwargs={"post_id": post.id}), data={})
+    response = admin_client.post(
+        reverse("like_post", kwargs={"post_id": post.id}), data={}
+    )
     assert response.status_code == 201
     assert Like.objects.filter(post=post).count() == 1
 
-    response = admin_client.post(reverse("like_post", kwargs={"post_id": post.id}), data={})
+    response = admin_client.post(
+        reverse("like_post", kwargs={"post_id": post.id}), data={}
+    )
     assert response.status_code == 400
     assert Like.objects.filter(post=post).count() == 1
 
@@ -68,11 +79,15 @@ def test_post_dislike(admin_client, admin_user):
     )
     assert Like.objects.count() == 1
 
-    response = admin_client.delete(reverse("dislike_post", kwargs={"post_id": like.post.id}), data={})
+    response = admin_client.delete(
+        reverse("dislike_post", kwargs={"post_id": like.post.id}), data={}
+    )
     assert response.status_code == 204
     assert Like.objects.count() == 0
 
-    response = admin_client.delete(reverse("dislike_post", kwargs={"post_id": like.post.id}), data={})
+    response = admin_client.delete(
+        reverse("dislike_post", kwargs={"post_id": like.post.id}), data={}
+    )
     assert response.status_code == 404
 
 
@@ -87,12 +102,12 @@ def test_analytics(client, admin_user):
             )
         )
     query = {"created_at_before": likes[2].created_at.isoformat()}
-    response = client.get(f"{reverse('analytics')}?{urlencode(query)}", )
+    response = client.get(f"{reverse('analytics')}?{urlencode(query)}",)
     assert response.status_code == 200
     assert response.json()["likes"] == 3
 
     query = {"created_at_after": likes[3].created_at.isoformat()}
-    response = client.get(f"{reverse('analytics')}?{urlencode(query)}", )
+    response = client.get(f"{reverse('analytics')}?{urlencode(query)}",)
     assert response.status_code == 200
     assert response.json()["likes"] == 2
 
@@ -100,6 +115,28 @@ def test_analytics(client, admin_user):
         "created_at_after": likes[1].created_at.isoformat(),
         "created_at_before": likes[3].created_at.isoformat(),
     }
-    response = client.get(f"{reverse('analytics')}?{urlencode(query)}", )
+    response = client.get(f"{reverse('analytics')}?{urlencode(query)}",)
     assert response.status_code == 200
     assert response.json()["likes"] == 3
+
+
+@pytest.mark.django_db
+def test_launch_bots():
+    launch_bots()
+
+    user_count = User.objects.count()
+    post_count = Post.objects.count()
+    like_count = Like.objects.count()
+    assert user_count != 0 and user_count <= settings.BOT_NUMBER_OF_USERS
+    assert (
+        post_count != 0
+        and settings.BOT_MAX_POSTS_PER_USER * settings.BOT_NUMBER_OF_USERS
+        >= post_count
+        >= settings.BOT_NUMBER_OF_USERS
+    )
+    assert (
+        like_count != 0
+        and settings.BOT_MAX_LIKES_PER_USER * settings.BOT_NUMBER_OF_USERS
+        >= like_count
+        >= settings.BOT_NUMBER_OF_USERS
+    )

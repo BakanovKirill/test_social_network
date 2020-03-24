@@ -5,14 +5,13 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./pg-init-scripts:/docker-entrypoint-initdb.d
+    - ./pg-init-scripts:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
       POSTGRES_DB: social_network
       POSTGRES_USER: social_network
       POSTGRES_PASSWORD: social_network
-      POSTGRES_MULTIPLE_DATABASES: social_network,social_network_test
   web:
     build: .
     command: start-reload

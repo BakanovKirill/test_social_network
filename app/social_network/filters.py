@@ -1,5 +1,6 @@
-from app.social_network.models import Like
 from django_filters import rest_framework as filters
+
+from app.social_network.models import Like
 
 
 class LikeFilter(filters.FilterSet):
