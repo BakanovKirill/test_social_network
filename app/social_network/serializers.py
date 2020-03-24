@@ -3,7 +3,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.hashers import make_password
 from django.db import transaction
 from rest_framework import serializers
+from .models import Post, Like
 from .tasks import enrich_user
+from ..clients import pyhunter_client
 
 User = get_user_model()
 
@@ -17,6 +19,12 @@ class SignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2")
+
+    def validate_email(self, value):
+        res = pyhunter_client.verify_email(value)
+        if res["result"] == "undeliverable":
+            raise serializers.ValidationError({"email": "Undeliverable email address."})
+        return value
 
     def validate(self, data):
         validated_data = super().validate(data)
@@ -44,3 +52,37 @@ class SignupSerializer(serializers.ModelSerializer):
 
         enrich_user.delay(user.id)
         return user
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = ("title", "text")
+
+    def create(self, validated_data):
+        validated_data["author"] = self.context["request"].user
+        return super().create(validated_data)
+
+
+class AnalyticsSerializer(serializers.Serializer):
+    date_from = serializers.DateTimeField(required=False, allow_null=True)
+    date_to = serializers.DateTimeField(required=False, allow_null=True)
+    likes = serializers.IntegerField()
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    author=serializers.HiddenField(default=None)
+    post=serializers.HiddenField(default=None)
+
+    class Meta:
+        model = Like
+        fields = ("author", "post")
+
+    def validate(self, attrs):
+        attrs["author"] = self.context["request"].user
+        attrs["post"] = self.context["post"]
+
+        if Like.objects.filter(**attrs).exists():
+            raise serializers.ValidationError({"post": "Already liked"})
+
+        return attrs

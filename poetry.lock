@@ -249,6 +249,28 @@ version = "0.4.5"
 
 [[package]]
 category = "main"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+name = "django-filter"
+optional = false
+python-versions = ">=3.4"
+version = "2.2.0"
+
+[package.dependencies]
+Django = ">=1.11"
+
+[[package]]
+category = "main"
+description = "Django middleware that logs http request body."
+name = "django-request-logging"
+optional = false
+python-versions = "*"
+version = "0.7.1"
+
+[package.dependencies]
+Django = "*"
+
+[[package]]
+category = "main"
 description = "Web APIs for Django, made easy."
 name = "djangorestframework"
 optional = false
@@ -620,6 +642,17 @@ version = "2.6.1"
 
 [[package]]
 category = "main"
+description = "An (unofficial) Python wrapper for the Hunter.io API"
+name = "pyhunter"
+optional = false
+python-versions = "*"
+version = "1.7"
+
+[package.dependencies]
+requests = "*"
+
+[[package]]
+category = "main"
 description = "JSON Web Token implementation in Python"
 name = "pyjwt"
 optional = false
@@ -708,7 +741,7 @@ pytest = ">=2.7"
 dev = ["pre-commit", "tox"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Invoke py.test as distutils command with dependency resolution"
 name = "pytest-runner"
 optional = false
@@ -916,7 +949,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "022b4bf8f3fd7d6057898b12cbaa5d1a9eadd03e83486daedcde0352f82db888"
+content-hash = "198c0356bccb6bdb52b95a6ced54db25f4b336e0ce574c5da6af9b5a16c39e00"
 python-versions = "3.7.6"
 
 [metadata.files]
@@ -998,6 +1031,14 @@ django = [
 django-environ = [
     {file = "django-environ-0.4.5.tar.gz", hash = "sha256:6c9d87660142608f63ec7d5ce5564c49b603ea8ff25da595fd6098f6dc82afde"},
     {file = "django_environ-0.4.5-py2.py3-none-any.whl", hash = "sha256:c57b3c11ec1f319d9474e3e5a79134f40174b17c7cc024bbb2fad84646b120c4"},
+]
+django-filter = [
+    {file = "django-filter-2.2.0.tar.gz", hash = "sha256:c3deb57f0dd7ff94d7dce52a047516822013e2b441bed472b722a317658cfd14"},
+    {file = "django_filter-2.2.0-py3-none-any.whl", hash = "sha256:558c727bce3ffa89c4a7a0b13bc8976745d63e5fd576b3a9a851650ef11c401b"},
+]
+django-request-logging = [
+    {file = "django-request-logging-0.7.1.tar.gz", hash = "sha256:00d34bc249bf50d01390cf55690831bd3261f02a5f9ec12777de95ddeaa5b5d0"},
+    {file = "django_request_logging-0.7.1-py2.py3-none-any.whl", hash = "sha256:5db443171a328591a7a95c6be99d056422d2d3f834108bca31dd9afae66bacf5"},
 ]
 djangorestframework = [
     {file = "djangorestframework-3.11.0-py3-none-any.whl", hash = "sha256:05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4"},
@@ -1153,6 +1194,9 @@ py = [
 pygments = [
     {file = "Pygments-2.6.1-py3-none-any.whl", hash = "sha256:ff7a40b4860b727ab48fad6360eb351cc1b33cbf9b15a0f689ca5353e9463324"},
     {file = "Pygments-2.6.1.tar.gz", hash = "sha256:647344a061c249a3b74e230c739f434d7ea4d8b1d5f3721bc0f3558049b38f44"},
+]
+pyhunter = [
+    {file = "pyhunter-1.7.tar.gz", hash = "sha256:a591603bd952bf895b68d753ade4456ba5fef5100d05f43d3d7846e2754b1ee8"},
 ]
 pyjwt = [
     {file = "PyJWT-1.7.1-py2.py3-none-any.whl", hash = "sha256:5c6eca3c2940464d106b99ba83b00c6add741c9becaec087fb7ccdefea71350e"},

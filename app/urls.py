@@ -1,4 +1,9 @@
-from app.social_network.views import SignupView
+from app.social_network.views import (
+    SignupView,
+    PostViewset,
+    AnalyticsView,
+    PostLikeView,
+)
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
@@ -27,6 +32,18 @@ api_urlpatterns = [
     path("token/", jwt_views.TokenObtainPairView.as_view(), name="token"),
     path("token/refresh/", jwt_views.TokenRefreshView.as_view(), name="token_refresh"),
     path("signup/", SignupView.as_view(), name="api_signup"),
+    path("posts/", PostViewset.as_view({"post": "create"}), name="create_post"),
+    path(
+        "posts/<int:post_id>/like",
+        PostLikeView.as_view({"post": "create"}),
+        name="like_post",
+    ),
+    path(
+        "posts/<int:post_id>/dislike",
+        PostLikeView.as_view({"delete": "destroy"}),
+        name="dislike_post",
+    ),
+    path("analytics/", AnalyticsView.as_view(), name="analytics"),
 ]
 
 urlpatterns = [

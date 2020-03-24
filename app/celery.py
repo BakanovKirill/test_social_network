@@ -16,6 +16,6 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 app.conf.beat_schedule = {
     # 'test-task': {
     #     'task': 'app.social_network.test_task',
-    #     'schedule': 60,
+    #     'schedule': 5,
     # }
 }
